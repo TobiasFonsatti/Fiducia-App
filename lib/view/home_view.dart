@@ -21,11 +21,16 @@ class HomeView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: const [
-              Icon(Icons.dashboard, size: 96, color: Colors.green),
-              SizedBox(height: 24),
-              Text(
-                'Bem-vindo ao App Finanças',
+            children: [
+              Image.asset(
+                'assets/images/logo.png',
+                width: 220,
+                height: 220,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'Bem-vindo ao FiduciaApp',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
