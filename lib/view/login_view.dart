@@ -42,9 +42,21 @@ class _LoginViewState extends State<LoginView> {
               obscureText: true,
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _login,
-              child: const Text('Entrar'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: _login,
+                  child: const Text('Entrar'),
+                ),
+                const SizedBox(width: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    // Adicione aqui a lógica para criar conta
+                  },
+                  child: const Text('Criar conta'),
+                ),
+              ],
             ),
             if (_message != null) ...[
               const SizedBox(height: 20),
