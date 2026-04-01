@@ -13,17 +13,22 @@ class _LoginViewState extends State<LoginView> {
   final _userController = TextEditingController();
   final _passController = TextEditingController();
   String? _message;
+  bool? _isSuccess;
 
-  void _login() {
-    final user = _userController.text;
-    final pass = _passController.text;
-    final success = _controller.login(user, pass);
-    setState(() {
-      _message = success ? 'Login realizado com sucesso!' : 'Usuário ou senha inválidos.';
-    });
-  }
+ void _login() {
+  final user = _userController.text;
+  final pass = _passController.text;
+  final success = _controller.login(user, pass);
 
-  @override
+  setState(() {
+    _isSuccess = success;
+    _message = success
+        ? 'Login realizado com sucesso!'
+        : 'Usuário ou senha inválidos.';
+  });
+}
+
+ @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Login')),
@@ -42,6 +47,7 @@ class _LoginViewState extends State<LoginView> {
               obscureText: true,
             ),
             const SizedBox(height: 20),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -52,15 +58,51 @@ class _LoginViewState extends State<LoginView> {
                 const SizedBox(width: 16),
                 ElevatedButton(
                   onPressed: () {
-                    // Adicione aqui a lógica para criar conta
+                    // lógica para criar conta
                   },
                   child: const Text('Criar conta'),
                 ),
               ],
             ),
+
             if (_message != null) ...[
               const SizedBox(height: 20),
-              Text(_message!, style: TextStyle(color: Colors.red)),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: _isSuccess == true
+                      ? Colors.green.shade100
+                      : Colors.red.shade100,
+                  border: Border.all(
+                    color: _isSuccess == true ? Colors.green : Colors.red,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      _isSuccess == true
+                          ? Icons.check_circle
+                          : Icons.error,
+                      color: _isSuccess == true
+                          ? Colors.green
+                          : Colors.red,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        _message!,
+                        style: TextStyle(
+                          color: _isSuccess == true
+                              ? Colors.green.shade900
+                              : Colors.red.shade900,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ]
           ],
         ),
