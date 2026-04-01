@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import '../controller/login_controller.dart';
 
 class LoginView extends StatefulWidget {
-  const LoginView({Key? key}) : super(key: key);
+  const LoginView({
+    Key? key,
+    required this.onToggleTheme,
+    required this.isDarkMode,
+  }) : super(key: key);
+
+  final VoidCallback onToggleTheme;
+  final bool isDarkMode;
 
   @override
   State<LoginView> createState() => _LoginViewState();
@@ -15,23 +22,32 @@ class _LoginViewState extends State<LoginView> {
   String? _message;
   bool? _isSuccess;
 
- void _login() {
-  final user = _userController.text;
-  final pass = _passController.text;
-  final success = _controller.login(user, pass);
+  void _login() {
+    final user = _userController.text;
+    final pass = _passController.text;
+    final success = _controller.login(user, pass);
 
-  setState(() {
-    _isSuccess = success;
-    _message = success
-        ? 'Login realizado com sucesso!'
-        : 'Usuário ou senha inválidos.';
-  });
-}
+    setState(() {
+      _isSuccess = success;
+      _message = success
+          ? 'Login realizado com sucesso!'
+          : 'Usuário ou senha inválidos.';
+    });
+  }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      appBar: AppBar(
+        title: const Text('Login'),
+        actions: [
+          IconButton(
+            onPressed: widget.onToggleTheme,
+            icon: Icon(widget.isDarkMode ? Icons.light_mode : Icons.dark_mode),
+            tooltip: widget.isDarkMode ? 'Modo claro' : 'Modo escuro',
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -51,10 +67,7 @@ class _LoginViewState extends State<LoginView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: _login,
-                  child: const Text('Entrar'),
-                ),
+                ElevatedButton(onPressed: _login, child: const Text('Entrar')),
                 const SizedBox(width: 16),
                 ElevatedButton(
                   onPressed: () {
@@ -81,12 +94,8 @@ class _LoginViewState extends State<LoginView> {
                 child: Row(
                   children: [
                     Icon(
-                      _isSuccess == true
-                          ? Icons.check_circle
-                          : Icons.error,
-                      color: _isSuccess == true
-                          ? Colors.green
-                          : Colors.red,
+                      _isSuccess == true ? Icons.check_circle : Icons.error,
+                      color: _isSuccess == true ? Colors.green : Colors.red,
                     ),
                     const SizedBox(width: 10),
                     Expanded(
@@ -103,7 +112,7 @@ class _LoginViewState extends State<LoginView> {
                   ],
                 ),
               ),
-            ]
+            ],
           ],
         ),
       ),
