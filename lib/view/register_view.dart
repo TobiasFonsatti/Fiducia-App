@@ -69,7 +69,7 @@ class _RegisterViewState extends State<RegisterView> {
         borderSide: BorderSide(color: Colors.red, width: 2),
       ),
       errorStyle: const TextStyle(
-        color: Colors.black87,
+        color: Colors.red,
         fontSize: 14,
         fontWeight: FontWeight.w600,
       ),
@@ -276,8 +276,8 @@ class _RegisterViewState extends State<RegisterView> {
                     margin: const EdgeInsets.only(bottom: 16),
                     decoration: BoxDecoration(
                       color: _isSuccess
-                          ? Colors.green.withOpacity(0.15)
-                          : Colors.red.withOpacity(0.15),
+                          ? Colors.green.withValues(alpha: 0.15)
+                          : Colors.red.withValues(alpha: 0.15),
                       border: Border.all(
                         color: _isSuccess ? Colors.green : Colors.red,
                         width: 1.5,
@@ -287,9 +287,12 @@ class _RegisterViewState extends State<RegisterView> {
                     child: Text(
                       _formMessage!,
                       style: TextStyle(
-                        color: Colors.black87,
+                        color: Theme.of(context).brightness == Brightness.dark &&
+                                _formMessage ==
+                                    'Você deve aceitar os termos de uso para continuar.'
+                            ? Colors.white
+                            : Colors.black87,
                         fontSize: 15,
-                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),

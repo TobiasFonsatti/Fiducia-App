@@ -93,14 +93,14 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 Container(
                   decoration: BoxDecoration(
                     color: widget.isDarkMode
-                        ? Colors.white.withOpacity(0.08)
-                        : Colors.white.withOpacity(0.95),
+                        ? Colors.white.withValues(alpha: 0.08)
+                        : Colors.white.withValues(alpha: 0.95),
                     borderRadius: BorderRadius.circular(32),
                     boxShadow: [
                       BoxShadow(
                         color: widget.isDarkMode
-                            ? Colors.black.withOpacity(0.35)
-                            : Colors.black.withOpacity(0.12),
+                            ? Colors.black.withValues(alpha: 0.35)
+                            : Colors.black.withValues(alpha: 0.12),
                         blurRadius: 24,
                         offset: const Offset(0, 12),
                       ),
@@ -143,7 +143,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                               ),
                               filled: true,
                               fillColor: widget.isDarkMode
-                                  ? Colors.white.withOpacity(0.05)
+                                  ? Colors.white.withValues(alpha: 0.05)
                                   : Colors.green.shade50,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(16),
@@ -167,8 +167,8 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
                                 color: _isSuccess
-                                    ? Colors.green.withOpacity(0.14)
-                                    : Colors.red.withOpacity(0.14),
+                                    ? Colors.green.withValues(alpha: 0.14)
+                                    : Colors.red.withValues(alpha: 0.14),
                                 borderRadius: BorderRadius.circular(16),
                               ),
                               child: Row(
