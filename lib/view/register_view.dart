@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home_view.dart';
+import 'widgets/message_helpers.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({
@@ -54,7 +55,10 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
-  InputDecoration _buildInputDecoration({required String label, required IconData icon}) {
+  InputDecoration _buildInputDecoration({
+    required String label,
+    required IconData icon,
+  }) {
     return InputDecoration(
       labelText: label,
       prefixIcon: Icon(icon),
@@ -89,14 +93,25 @@ class _RegisterViewState extends State<RegisterView> {
         _isSuccess = false;
         _formMessage = 'Você deve aceitar os termos de uso para continuar.';
       });
+      showInformationDialog(
+        context,
+        title: 'Atenção',
+        content: 'Você deve aceitar os termos de uso para continuar.',
+      );
       return;
     }
 
     if (!form.validate()) {
       setState(() {
         _isSuccess = false;
-        _formMessage = 'Corrija os campos destacados em vermelho para prosseguir.';
+        _formMessage =
+            'Corrija os campos destacados em vermelho para prosseguir.';
       });
+      showAppSnackBar(
+        context,
+        'Corrija os campos destacados em vermelho para prosseguir.',
+        isError: true,
+      );
       return;
     }
 
@@ -104,6 +119,10 @@ class _RegisterViewState extends State<RegisterView> {
       _isSuccess = true;
       _formMessage = 'Cadastro realizado com sucesso! Bem-vindo ao aplicativo.';
     });
+    showAppSnackBar(
+      context,
+      'Cadastro realizado com sucesso! Bem-vindo ao aplicativo.',
+    );
 
     Future.delayed(const Duration(milliseconds: 800), () {
       if (!mounted) return;
@@ -144,7 +163,9 @@ class _RegisterViewState extends State<RegisterView> {
           padding: const EdgeInsets.all(24.0),
           child: Form(
             key: _formKey,
-            autovalidateMode: _submitted ? AutovalidateMode.always : AutovalidateMode.disabled,
+            autovalidateMode: _submitted
+                ? AutovalidateMode.always
+                : AutovalidateMode.disabled,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -287,7 +308,8 @@ class _RegisterViewState extends State<RegisterView> {
                     child: Text(
                       _formMessage!,
                       style: TextStyle(
-                        color: Theme.of(context).brightness == Brightness.dark &&
+                        color:
+                            Theme.of(context).brightness == Brightness.dark &&
                                 _formMessage ==
                                     'Você deve aceitar os termos de uso para continuar.'
                             ? Colors.white

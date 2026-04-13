@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../controller/forgot_password_controller.dart';
+import 'widgets/message_helpers.dart';
 
 class ForgotPasswordView extends StatefulWidget {
   const ForgotPasswordView({
@@ -22,11 +23,16 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   String? _message;
   bool _isSuccess = false;
 
-  void _requestReset() {
+  Future<void> _requestReset() async {
     if (!(_formKey.currentState?.validate() ?? false)) {
       setState(() {
         _message = null;
       });
+      showAppSnackBar(
+        context,
+        'Informe um e-mail válido para continuar.',
+        isError: true,
+      );
       return;
     }
 
@@ -36,18 +42,28 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     if (success) {
       setState(() {
         _isSuccess = true;
-        _message = 'Instruções para redefinir a senha foram enviadas para o seu e-mail.';
+        _message =
+            'Instruções para redefinir a senha foram enviadas para o seu e-mail.';
       });
-      Future.delayed(const Duration(milliseconds: 800), () {
-        if (mounted) {
-          Navigator.of(context).pop();
-        }
-      });
+      await showInformationDialog(
+        context,
+        title: 'Recuperação de senha',
+        content:
+            'Instruções para redefinir a senha foram enviadas para o seu e-mail.',
+      );
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
     } else {
       setState(() {
         _isSuccess = false;
         _message = 'Erro ao solicitar recuperação de senha. Tente novamente.';
       });
+      showAppSnackBar(
+        context,
+        'Erro ao solicitar recuperação de senha. Tente novamente.',
+        isError: true,
+      );
     }
   }
 
@@ -174,15 +190,21 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                               child: Row(
                                 children: [
                                   Icon(
-                                    _isSuccess ? Icons.check_circle : Icons.error,
-                                    color: _isSuccess ? Colors.green : Colors.red,
+                                    _isSuccess
+                                        ? Icons.check_circle
+                                        : Icons.error,
+                                    color: _isSuccess
+                                        ? Colors.green
+                                        : Colors.red,
                                   ),
                                   const SizedBox(width: 12),
                                   Expanded(
                                     child: Text(
                                       _message!,
                                       style: TextStyle(
-                                        color: _isSuccess ? Colors.green : Colors.red,
+                                        color: _isSuccess
+                                            ? Colors.green
+                                            : Colors.red,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),

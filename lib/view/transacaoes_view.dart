@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'widgets/app_drawer.dart';
+import 'widgets/message_helpers.dart';
 
 class TransactionsView extends StatefulWidget {
   const TransactionsView({super.key});
@@ -17,14 +18,54 @@ class _TransactionsViewState extends State<TransactionsView>
   late final Animation<double> _editAnim;
 
   final List<Map<String, dynamic>> allTransactions = [
-    {'description': 'Salário', 'amount': 3000.00, 'date': '2023-10-01', 'type': 'income'},
-    {'description': 'Aluguel', 'amount': -800.00, 'date': '2023-10-02', 'type': 'expense'},
-    {'description': 'Compras', 'amount': -150.00, 'date': '2023-10-03', 'type': 'expense'},
-    {'description': 'Freelance', 'amount': 500.00, 'date': '2023-10-04', 'type': 'income'},
-    {'description': 'Conta de Luz', 'amount': -120.00, 'date': '2023-10-05', 'type': 'expense'},
-    {'description': 'Internet', 'amount': -99.90, 'date': '2023-10-06', 'type': 'expense'},
-    {'description': 'Gasolina', 'amount': -250.00, 'date': '2023-10-07', 'type': 'expense'},
-    {'description': 'Rendimentos', 'amount': 150.00, 'date': '2023-10-08', 'type': 'income'},
+    {
+      'description': 'Salário',
+      'amount': 3000.00,
+      'date': '2023-10-01',
+      'type': 'income',
+    },
+    {
+      'description': 'Aluguel',
+      'amount': -800.00,
+      'date': '2023-10-02',
+      'type': 'expense',
+    },
+    {
+      'description': 'Compras',
+      'amount': -150.00,
+      'date': '2023-10-03',
+      'type': 'expense',
+    },
+    {
+      'description': 'Freelance',
+      'amount': 500.00,
+      'date': '2023-10-04',
+      'type': 'income',
+    },
+    {
+      'description': 'Conta de Luz',
+      'amount': -120.00,
+      'date': '2023-10-05',
+      'type': 'expense',
+    },
+    {
+      'description': 'Internet',
+      'amount': -99.90,
+      'date': '2023-10-06',
+      'type': 'expense',
+    },
+    {
+      'description': 'Gasolina',
+      'amount': -250.00,
+      'date': '2023-10-07',
+      'type': 'expense',
+    },
+    {
+      'description': 'Rendimentos',
+      'amount': 150.00,
+      'date': '2023-10-08',
+      'type': 'income',
+    },
   ];
 
   @override
@@ -82,7 +123,9 @@ class _TransactionsViewState extends State<TransactionsView>
             child: TextButton(
               onPressed: _toggleEditMode,
               style: TextButton.styleFrom(
-                foregroundColor: isDark ? const Color(0xFF86EFAC) : Colors.green.shade700,
+                foregroundColor: isDark
+                    ? const Color(0xFF86EFAC)
+                    : Colors.green.shade700,
                 padding: const EdgeInsets.symmetric(horizontal: 12),
               ),
               child: AnimatedSwitcher(
@@ -118,9 +161,18 @@ class _TransactionsViewState extends State<TransactionsView>
                 scrollDirection: Axis.horizontal,
                 child: SegmentedButton<String>(
                   segments: const [
-                    ButtonSegment(value: 'all', label: Text('Todas', style: TextStyle(fontSize: 14))),
-                    ButtonSegment(value: 'income', label: Text('Receitas', style: TextStyle(fontSize: 14))),
-                    ButtonSegment(value: 'expense', label: Text('Despesas', style: TextStyle(fontSize: 14))),
+                    ButtonSegment(
+                      value: 'all',
+                      label: Text('Todas', style: TextStyle(fontSize: 14)),
+                    ),
+                    ButtonSegment(
+                      value: 'income',
+                      label: Text('Receitas', style: TextStyle(fontSize: 14)),
+                    ),
+                    ButtonSegment(
+                      value: 'expense',
+                      label: Text('Despesas', style: TextStyle(fontSize: 14)),
+                    ),
                   ],
                   selected: {_filter},
                   onSelectionChanged: (Set<String> newSelection) {
@@ -139,9 +191,14 @@ class _TransactionsViewState extends State<TransactionsView>
                   ? Container(
                       width: double.infinity,
                       margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 10,
+                      ),
                       decoration: BoxDecoration(
-                        color: Colors.red.withValues(alpha: isDark ? 0.15 : 0.08),
+                        color: Colors.red.withValues(
+                          alpha: isDark ? 0.15 : 0.08,
+                        ),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: Colors.red.withValues(alpha: 0.3),
@@ -150,7 +207,11 @@ class _TransactionsViewState extends State<TransactionsView>
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.info_outline, color: Colors.red.shade400, size: 16),
+                          Icon(
+                            Icons.info_outline,
+                            color: Colors.red.shade400,
+                            size: 16,
+                          ),
                           const SizedBox(width: 8),
                           Text(
                             'Toque na lixeira para excluir um item',
@@ -182,7 +243,9 @@ class _TransactionsViewState extends State<TransactionsView>
                             'Nenhuma transação encontrada',
                             style: TextStyle(
                               color: isDark
-                                  ? const Color(0xFF86EFAC).withValues(alpha: 0.5)
+                                  ? const Color(
+                                      0xFF86EFAC,
+                                    ).withValues(alpha: 0.5)
                                   : Colors.grey.shade500,
                             ),
                           ),
@@ -204,12 +267,18 @@ class _TransactionsViewState extends State<TransactionsView>
                             ),
                             leading: CircleAvatar(
                               backgroundColor: isIncome
-                                  ? const Color(0xFF4ADE80).withValues(alpha: isDark ? 0.2 : 0.15)
+                                  ? const Color(
+                                      0xFF4ADE80,
+                                    ).withValues(alpha: isDark ? 0.2 : 0.15)
                                   : Colors.red.withValues(alpha: 0.15),
                               child: Icon(
-                                isIncome ? Icons.arrow_upward : Icons.arrow_downward,
+                                isIncome
+                                    ? Icons.arrow_upward
+                                    : Icons.arrow_downward,
                                 color: isIncome
-                                    ? (isDark ? const Color(0xFF4ADE80) : Colors.green)
+                                    ? (isDark
+                                          ? const Color(0xFF4ADE80)
+                                          : Colors.green)
                                     : Colors.red,
                                 size: 20,
                               ),
@@ -225,7 +294,9 @@ class _TransactionsViewState extends State<TransactionsView>
                               transaction['date'],
                               style: TextStyle(
                                 color: isDark
-                                    ? const Color(0xFF86EFAC).withValues(alpha: 0.6)
+                                    ? const Color(
+                                        0xFF86EFAC,
+                                      ).withValues(alpha: 0.6)
                                     : null,
                               ),
                             ),
@@ -236,7 +307,9 @@ class _TransactionsViewState extends State<TransactionsView>
                                   'R\$ ${transaction['amount'].abs().toStringAsFixed(2)}',
                                   style: TextStyle(
                                     color: isIncome
-                                        ? (isDark ? const Color(0xFF4ADE80) : Colors.green)
+                                        ? (isDark
+                                              ? const Color(0xFF4ADE80)
+                                              : Colors.green)
                                         : Colors.red.shade400,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
@@ -251,12 +324,15 @@ class _TransactionsViewState extends State<TransactionsView>
                                     child: Padding(
                                       padding: const EdgeInsets.only(left: 8),
                                       child: GestureDetector(
-                                        onTap: () => _confirmDelete(transaction),
+                                        onTap: () =>
+                                            _confirmDelete(transaction),
                                         child: Container(
                                           width: 36,
                                           height: 36,
                                           decoration: BoxDecoration(
-                                            color: Colors.red.withValues(alpha: 0.12),
+                                            color: Colors.red.withValues(
+                                              alpha: 0.12,
+                                            ),
                                             shape: BoxShape.circle,
                                           ),
                                           child: Icon(
@@ -289,7 +365,9 @@ class _TransactionsViewState extends State<TransactionsView>
         final isDark = Theme.of(ctx).brightness == Brightness.dark;
         return AlertDialog(
           backgroundColor: isDark ? const Color(0xFF133E28) : Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Row(
             children: [
               Icon(Icons.delete_outline, color: Colors.red.shade400, size: 24),
@@ -317,7 +395,9 @@ class _TransactionsViewState extends State<TransactionsView>
               child: Text(
                 'Cancelar',
                 style: TextStyle(
-                  color: isDark ? const Color(0xFF86EFAC) : Colors.grey.shade700,
+                  color: isDark
+                      ? const Color(0xFF86EFAC)
+                      : Colors.grey.shade700,
                 ),
               ),
             ),
@@ -326,7 +406,9 @@ class _TransactionsViewState extends State<TransactionsView>
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red.shade400,
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               child: const Text('Excluir'),
             ),
@@ -337,6 +419,7 @@ class _TransactionsViewState extends State<TransactionsView>
 
     if (confirmed == true) {
       _deleteTransaction(transaction);
+      showAppSnackBar(context, 'Transação excluída com sucesso!');
     }
   }
 }

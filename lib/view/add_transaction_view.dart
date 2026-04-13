@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'widgets/message_helpers.dart';
 
 class CurrencyInputFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     String newText = newValue.text.replaceAll(RegExp(r'[^\d]'), '');
-    
+
     if (newText.isEmpty) {
-      return newValue.copyWith(text: '', selection: const TextSelection.collapsed(offset: 0));
+      return newValue.copyWith(
+        text: '',
+        selection: const TextSelection.collapsed(offset: 0),
+      );
     }
 
     double value = double.parse(newText) / 100;
     String formattedValue = value.toStringAsFixed(2).replaceAll('.', ',');
-    
+
     List<String> parts = formattedValue.split(',');
     String intPart = parts[0];
     String decPart = parts[1];
-    
+
     String finalIntPart = "";
     int count = 0;
     for (int i = intPart.length - 1; i >= 0; i--) {
@@ -27,7 +34,7 @@ class CurrencyInputFormatter extends TextInputFormatter {
       finalIntPart = intPart[i] + finalIntPart;
       count++;
     }
-    
+
     String newString = '$finalIntPart,$decPart';
 
     return newValue.copyWith(
@@ -60,7 +67,8 @@ class _AddTransactionViewState extends State<AddTransactionView> {
           text: '0,00',
           selection: TextSelection.collapsed(offset: 4),
         );
-      } else if (!_amountFocusNode.hasFocus && _amountController.text == '0,00') {
+      } else if (!_amountFocusNode.hasFocus &&
+          _amountController.text == '0,00') {
         _amountController.clear();
       }
     });
@@ -76,22 +84,23 @@ class _AddTransactionViewState extends State<AddTransactionView> {
 
   void _saveTransaction() {
     if (_formKey.currentState?.validate() ?? false) {
-      // Quando salvar a transação, retorna para a home view
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Transação adicionada com sucesso!')),
-      );
+      showAppSnackBar(context, 'Transação adicionada com sucesso!');
       Navigator.of(context).pop();
+      return;
     }
+
+    showAppSnackBar(
+      context,
+      'Corrija os campos marcados para salvar a transação.',
+      isError: true,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Nova Transação'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Nova Transação'), centerTitle: true),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -111,78 +120,80 @@ class _AddTransactionViewState extends State<AddTransactionView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-              TextFormField(
-                controller: _descriptionController,
-                decoration: const InputDecoration(
-                  labelText: 'Descrição',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.description),
-                ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Insira uma descrição válida';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _amountController,
-                focusNode: _amountFocusNode,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  CurrencyInputFormatter(),
-                ],
-                decoration: const InputDecoration(
-                  labelText: 'Valor (R\$)',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.attach_money),
-                ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty || value == '0,00') {
-                    return 'Insira um valor válido';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ChoiceChip(
-                    label: const Text('Receita'),
-                    selected: _transactionType == 'income',
-                    selectedColor: Colors.green.withValues(alpha: 0.3),
-                    onSelected: (selected) {
-                      if (selected) {
-                        setState(() => _transactionType = 'income');
-                      }
-                    },
+                TextFormField(
+                  controller: _descriptionController,
+                  decoration: const InputDecoration(
+                    labelText: 'Descrição',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.description),
                   ),
-                  ChoiceChip(
-                    label: const Text('Despesa'),
-                    selected: _transactionType == 'expense',
-                    selectedColor: Colors.red.withValues(alpha: 0.3),
-                    onSelected: (selected) {
-                      if (selected) {
-                        setState(() => _transactionType = 'expense');
-                      }
-                    },
-                  ),
-                ],
-              ),
-              const Spacer(),
-              ElevatedButton(
-                onPressed: _saveTransaction,
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(50),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Insira uma descrição válida';
+                    }
+                    return null;
+                  },
                 ),
-                child: const Text('Salvar', style: TextStyle(fontSize: 16)),
-              ),
-            ],
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _amountController,
+                  focusNode: _amountFocusNode,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    CurrencyInputFormatter(),
+                  ],
+                  decoration: const InputDecoration(
+                    labelText: 'Valor (R\$)',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.attach_money),
+                  ),
+                  validator: (value) {
+                    if (value == null ||
+                        value.trim().isEmpty ||
+                        value == '0,00') {
+                      return 'Insira um valor válido';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ChoiceChip(
+                      label: const Text('Receita'),
+                      selected: _transactionType == 'income',
+                      selectedColor: Colors.green.withValues(alpha: 0.3),
+                      onSelected: (selected) {
+                        if (selected) {
+                          setState(() => _transactionType = 'income');
+                        }
+                      },
+                    ),
+                    ChoiceChip(
+                      label: const Text('Despesa'),
+                      selected: _transactionType == 'expense',
+                      selectedColor: Colors.red.withValues(alpha: 0.3),
+                      onSelected: (selected) {
+                        if (selected) {
+                          setState(() => _transactionType = 'expense');
+                        }
+                      },
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                ElevatedButton(
+                  onPressed: _saveTransaction,
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50),
+                  ),
+                  child: const Text('Salvar', style: TextStyle(fontSize: 16)),
+                ),
+              ],
+            ),
           ),
-        ),
         ),
       ),
     );

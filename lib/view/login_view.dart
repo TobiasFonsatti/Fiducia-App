@@ -3,6 +3,7 @@ import '../controller/login_controller.dart';
 import 'home_view.dart';
 import 'register_view.dart';
 import 'forgot_password_view.dart';
+import 'widgets/message_helpers.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({
@@ -32,6 +33,11 @@ class _LoginViewState extends State<LoginView> {
       setState(() {
         _message = null;
       });
+      showAppSnackBar(
+        context,
+        'Preencha e valide os campos para continuar.',
+        isError: true,
+      );
       return;
     }
 
@@ -45,14 +51,17 @@ class _LoginViewState extends State<LoginView> {
         _message = 'Login realizado com sucesso!';
       });
 
+      showAppSnackBar(context, 'Login realizado com sucesso!');
       Future.delayed(const Duration(milliseconds: 700), () {
         if (!mounted) return;
-        Navigator.of(
-          context,
-        ).push(MaterialPageRoute(builder: (_) => HomeView(
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => HomeView(
               isDarkMode: widget.isDarkMode,
               onToggleTheme: widget.onToggleTheme,
-            )));
+            ),
+          ),
+        );
       });
       return;
     }
@@ -62,17 +71,22 @@ class _LoginViewState extends State<LoginView> {
       _message =
           'E-mail ou senha inválidos. Verifique suas credenciais e tente novamente.';
     });
+    showAppSnackBar(
+      context,
+      'E-mail ou senha inválidos. Verifique suas credenciais e tente novamente.',
+      isError: true,
+    );
   }
 
   void _navigateToRegister() {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(
-      builder: (_) => RegisterView(
-        isDarkMode: widget.isDarkMode,
-        onToggleTheme: widget.onToggleTheme,
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => RegisterView(
+          isDarkMode: widget.isDarkMode,
+          onToggleTheme: widget.onToggleTheme,
+        ),
       ),
-    ));
+    );
   }
 
   void _navigateToForgotPassword() {
@@ -290,8 +304,12 @@ class _LoginViewState extends State<LoginView> {
                                       padding: const EdgeInsets.all(12),
                                       decoration: BoxDecoration(
                                         color: _isSuccess
-                                            ? Colors.green.withValues(alpha: 0.14)
-                                            : Colors.red.withValues(alpha: 0.14),
+                                            ? Colors.green.withValues(
+                                                alpha: 0.14,
+                                              )
+                                            : Colors.red.withValues(
+                                                alpha: 0.14,
+                                              ),
                                         borderRadius: BorderRadius.circular(16),
                                       ),
                                       child: Row(
