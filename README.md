@@ -1,4 +1,4 @@
-# App Finanças
+# Fiducia App
 
 > Aplicativo Mobile para Gestão de Finanças Pessoais
 
@@ -8,7 +8,7 @@
 
 ## 📋 Sobre o Projeto
 
-App Finanças é um aplicativo mobile desenvolvido em **Flutter/Dart** com o objetivo de oferecer uma solução completa para gestão de finanças pessoais. O aplicativo permite que usuários gerenciem suas transações financeiras, visualizem relatórios financeiros e controlem seus gastos de forma intuitiva e eficiente.
+Fiducia App é um aplicativo mobile desenvolvido em **Flutter/Dart** com o objetivo de oferecer uma solução completa para gestão de finanças pessoais. O aplicativo permite que usuários gerenciem suas transações financeiras, visualizem relatórios financeiros e controlem seus gastos de forma intuitiva e eficiente.
 
 ---
 
